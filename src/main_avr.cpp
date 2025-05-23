@@ -4,17 +4,17 @@
 // ========== UART SETUP ==========
 
 #define BAUD 115200
-#define MYUBRR ((F_CPU + BAUD*8) / (16*BAUD) - 1)
+#define MYUBRR ((F_CPU + BAUD * 8) / (16 * BAUD) - 1)
 
 void uart_init(unsigned int ubrr) {
   UBRR0H = (unsigned char)(ubrr >> 8);
   UBRR0L = (unsigned char)ubrr;
-  UCSR0B = (1 << TXEN0); // Enable transmitter
-  UCSR0C = (1 << UCSZ01) | (1 << UCSZ00); // 8 data bits, 1 stop bit
+  UCSR0B = (1 << TXEN0);                   // Enable transmitter
+  UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);  // 8 data bits, 1 stop bit
 }
 
 void uart_send(char data) {
-  while (!(UCSR0A & (1 << UDRE0))); // Wait until buffer empty
+  while (!(UCSR0A & (1 << UDRE0)));  // Wait until buffer empty
   UDR0 = data;
 }
 
@@ -29,7 +29,7 @@ void uart_print(const char* str) {
 class Blinker {
  public:
   Blinker() {
-    DDRB |= (1 << DDB5); // Configure pin 13 (PORTB5) as output
+    DDRB |= (1 << DDB5);  // Configure pin 13 (PORTB5) as output
   }
 
   void toggle() { PORTB ^= (1 << PORTB5); }
